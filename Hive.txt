@@ -1,0 +1,51 @@
+Table:
+
+CREATE TABLE project(
+rowid INT,
+orderid STRING,
+orderdata STRING,
+shipdate STRING,
+shipmode STRING,
+customerid STRING,
+customername STRING,
+segment STRING,
+country STRING,
+city STRING,
+state STRING,
+postalcode INT,
+region STRING,
+productid STRING,
+category STRING,
+subcategory STRING,
+productname STRING,
+sales decimal(10,2),
+quantity INT ,
+discount decimal(10,2),
+profit decimal(10,2)
+)
+row format delimited fields terminated by stored as textfile;
+
+load data local inpath 'store.csv' into table project;
+
+
+COMMANDS: 
+
+1->Regions with the Highest Sales and Profits:
+
+select region, sum(sales) as total_sales, sum(profit) as total_profits from project group by region order by total_profits desc;
+
+2->Profit Margin Analysis by Region:
+
+select region, round((sum(profit) / sum(sales)) *100, 2) as profit_margin from project group by region order by profit_margin desc;
+
+3->Analysis of Top Sales and Profit Categories by Region:
+
+select region, category, sum(sales) as total_sales, sum(profit) as total_profit from project group by region, category order by total_profit desc;
+
+4->Analysis of Top Sales and Profits by Category in Each State:
+
+select state, category, sum(sales) as total_sales, sum(profit) as total_profit from project group by state, category order by total_profit desc;
+
+5->Analysis of Profit and Sales by Segment:
+
+select segment, sum(sales) as total_sales, sum(profit) as total_profit from project group by segment order by total_profit desc;
